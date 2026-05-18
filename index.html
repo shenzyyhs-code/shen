@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shen Flowers — Toko Buket Bunga</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose:#c9625f; --rose-light:#e8a09e; --rose-dark:#9e3f3c;
+    --cream:#fdf6ef; --warm:#f5e6d3; --sage:#8a9e7c;
+    --brown:#5c3d2e; --text:#2a1a14; --text-muted:#7a5c52; --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--warm);}
+  ::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:3px;}
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;background:rgba(253,246,239,0.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(201,98,95,0.12);transition:padding .3s;}
+  nav.scrolled{padding:13px 60px;}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--rose-dark);letter-spacing:1px;text-decoration:none;}
+  .nav-logo span{color:var(--sage);font-style:italic;}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{text-decoration:none;color:var(--text);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;position:relative;transition:color .3s;}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--rose);transition:width .3s;}
+  .nav-links a:hover{color:var(--rose);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-actions{display:flex;gap:14px;align-items:center;}
+  .cart-btn{position:relative;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text);transition:color .3s;}
+  .cart-btn:hover{color:var(--rose);}
+  .cart-count{position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;width:18px;height:18px;border-radius:50%;font-size:10px;font-family:'Jost';font-weight:500;display:none;align-items:center;justify-content:center;}
+  .btn-primary{background:var(--rose);color:white;border:none;padding:11px 24px;font-family:'Jost';font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;border-radius:2px;text-decoration:none;display:inline-block;}
+  .btn-primary:hover{background:var(--rose-dark);transform:translateY(-1px);}
+  .btn-outline{background:transparent;color:var(--rose);border:1.5px solid var(--rose);padding:10px 24px;font-family:'Jost';font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;border-radius:2px;text-decoration:none;display:inline-block;}
+  .btn-outline:hover{background:var(--rose);color:white;transform:translateY(-1px);}
+  .btn-wa{background:#25D366;color:white;border:none;padding:11px 24px;font-family:'Jost';font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;border-radius:2px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+  .btn-wa:hover{background:#1da851;transform:translateY(-1px);}
+
+  /* HERO */
+  .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 60px 60px;gap:60px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:0;right:0;width:55%;height:100%;background:linear-gradient(135deg,#f0dfd6 0%,#e8c5be 100%);z-index:0;}
+  .hero-text{position:relative;z-index:1;}
+  .hero-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--sage);font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+  .hero-tag::before{content:'';width:30px;height:1px;background:var(--sage);}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,5vw,68px);line-height:1.1;font-weight:700;color:var(--brown);margin-bottom:22px;}
+  .hero h1 em{color:var(--rose);font-style:italic;}
+  .hero p{font-size:15px;line-height:1.8;color:var(--text-muted);max-width:420px;margin-bottom:36px;}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-img{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;}
+  .hero-img-frame{width:400px;height:500px;background:linear-gradient(160deg,#d4a0a0 0%,#c06060 40%,#8a4040 100%);border-radius:200px;display:flex;align-items:center;justify-content:center;box-shadow:0 40px 80px rgba(160,80,80,.3);animation:float 6s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+  .hero-flower-emoji{font-size:130px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.2));}
+  .hero-stats{display:flex;gap:40px;margin-top:48px;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--rose-dark);display:block;}
+  .stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);font-weight:500;}
+
+  /* MARQUEE */
+  .marquee-wrap{background:var(--rose);padding:13px 0;overflow:hidden;}
+  .marquee-track{display:flex;gap:60px;width:max-content;animation:marquee 22s linear infinite;}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .marquee-item{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:white;font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:20px;}
+  .marquee-item::after{content:'✦';opacity:.6;}
+
+  /* SECTIONS */
+  section{padding:90px 60px;}
+  .section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--sage);font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .section-tag::before{content:'';width:24px;height:1px;background:var(--sage);}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,50px);font-weight:700;color:var(--brown);line-height:1.15;}
+  .section-title em{color:var(--rose);font-style:italic;}
+
+  /* KATEGORI */
+  #kategori{background:var(--white);}
+  .cat-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px;}
+  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .cat-card{border-radius:4px;overflow:hidden;cursor:pointer;transition:transform .4s;}
+  .cat-card:hover{transform:translateY(-8px);}
+  .cat-img{height:260px;display:flex;align-items:center;justify-content:center;font-size:76px;transition:transform .4s;position:relative;}
+  .cat-card:hover .cat-img{transform:scale(1.05);}
+  .cat-card:nth-child(1) .cat-img{background:linear-gradient(135deg,#ffd6d6,#ffb3b3);}
+  .cat-card:nth-child(2) .cat-img{background:linear-gradient(135deg,#ffe8d6,#ffd0b0);}
+  .cat-card:nth-child(3) .cat-img{background:linear-gradient(135deg,#d6f5d6,#b0e0b0);}
+  .cat-card:nth-child(4) .cat-img{background:linear-gradient(135deg,#e8d6ff,#d0b0ff);}
+  .cat-info{padding:16px 0 6px;}
+  .cat-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--brown);}
+  .cat-count{font-size:12px;color:var(--text-muted);margin-top:3px;}
+
+  /* PRODUK */
+  #produk{background:var(--cream);}
+  .prod-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:46px;flex-wrap:wrap;gap:20px;}
+  .filter-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-tab{padding:7px 18px;border:1.5px solid #ddd;background:none;border-radius:100px;font-family:'Jost';font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;color:var(--text-muted);}
+  .filter-tab.active,.filter-tab:hover{background:var(--rose);border-color:var(--rose);color:white;}
+  .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .prod-card{background:white;border-radius:4px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.06);transition:all .4s;position:relative;}
+  .prod-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(160,80,80,.15);}
+  .prod-badge{position:absolute;top:12px;left:12px;background:var(--rose);color:white;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:2px;z-index:2;}
+  .prod-badge.new{background:var(--sage);}
+  .prod-img{height:230px;display:flex;align-items:center;justify-content:center;font-size:76px;cursor:pointer;transition:transform .4s;position:relative;overflow:hidden;}
+  .prod-card:hover .prod-img{transform:scale(1.04);}
+  .wishlist-btn{position:absolute;top:10px;right:10px;background:white;border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .3s;z-index:3;}
+  .wishlist-btn:hover,.wishlist-btn.active{background:var(--rose);color:white;transform:scale(1.1);}
+  .prod-info{padding:18px;}
+  .prod-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--brown);margin-bottom:5px;}
+  .prod-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:14px;}
+  .prod-footer{display:flex;align-items:center;justify-content:space-between;}
+  .prod-price{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--rose-dark);}
+  .prod-price-old{font-size:12px;color:#bbb;text-decoration:line-through;display:block;}
+  .add-cart-btn{width:36px;height:36px;border-radius:50%;background:var(--rose);color:white;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+  .add-cart-btn:hover{background:var(--rose-dark);transform:scale(1.1);}
+
+  /* GALLERY */
+  #galeri{background:var(--white);}
+  .gallery-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:50px;flex-wrap:wrap;gap:20px;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:16px;}
+  .gallery-item{border-radius:4px;overflow:hidden;cursor:pointer;position:relative;background:var(--warm);}
+  .gallery-item:first-child{grid-row:1/3;grid-column:1/2;}
+  .gallery-img{width:100%;height:100%;min-height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;transition:transform .5s;background:linear-gradient(135deg,#ffe0e0,#ffc8c8);}
+  .gallery-item:nth-child(1) .gallery-img{min-height:416px;background:linear-gradient(135deg,#ffd6d6,#ff9999);}
+  .gallery-item:nth-child(2) .gallery-img{background:linear-gradient(135deg,#fff0d6,#ffd090);}
+  .gallery-item:nth-child(3) .gallery-img{background:linear-gradient(135deg,#e0f5e0,#a8e0a8);}
+  .gallery-item:nth-child(4) .gallery-img{background:linear-gradient(135deg,#ffe0f5,#f5a8e0);}
+  .gallery-item:nth-child(5) .gallery-img{background:linear-gradient(135deg,#e0e8ff,#a8c0ff);}
+  .gallery-item:nth-child(6) .gallery-img{background:linear-gradient(135deg,#f5ffe0,#d0f098);}
+  .gallery-item:hover .gallery-img{transform:scale(1.06);}
+  .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(92,61,46,.8) 0%,transparent 60%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:20px;}
+  .gallery-item:hover .gallery-overlay{opacity:1;}
+  .gallery-caption{color:white;font-family:'Playfair Display',serif;font-size:15px;font-weight:600;}
+  .gallery-sub{color:rgba(255,255,255,.7);font-size:11px;letter-spacing:1px;margin-top:2px;}
+
+  /* BANNER */
+  .banner-section{padding:0 60px 90px;background:var(--cream);}
+  .banner{background:linear-gradient(135deg,var(--brown) 0%,#8a4040 50%,var(--rose-dark) 100%);border-radius:8px;padding:70px 80px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;position:relative;overflow:hidden;}
+  .banner::before{content:'🌸';font-size:180px;opacity:.07;position:absolute;right:180px;top:-20px;animation:float 8s ease-in-out infinite;}
+  .banner-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--rose-light);font-weight:500;margin-bottom:14px;}
+  .banner h2{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,42px);font-weight:700;color:white;line-height:1.2;margin-bottom:14px;}
+  .banner p{font-size:14px;color:rgba(255,255,255,.7);max-width:480px;line-height:1.8;}
+  .banner-btns{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+
+  /* TESTI */
+  #ulasan{background:var(--cream);}
+  .testi-header{text-align:center;margin-bottom:56px;}
+  .testi-header .section-tag{justify-content:center;}
+  .testi-header .section-tag::before{display:none;}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .testi-card{background:white;padding:32px;border-radius:4px;border:1px solid rgba(201,98,95,.1);transition:all .3s;}
+  .testi-card:hover{border-color:var(--rose-light);transform:translateY(-4px);box-shadow:0 12px 40px rgba(160,80,80,.1);}
+  .testi-quote{font-family:'Playfair Display',serif;font-size:56px;color:var(--rose-light);line-height:.5;margin-bottom:18px;display:block;}
+  .testi-text{font-size:14px;line-height:1.8;color:var(--text-muted);margin-bottom:24px;font-style:italic;}
+  .testi-footer{display:flex;align-items:center;gap:12px;}
+  .testi-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--warm);}
+  .testi-name{font-weight:600;font-size:13px;color:var(--brown);}
+  .testi-date{font-size:11px;color:var(--text-muted);}
+  .stars{color:#f4b942;font-size:12px;letter-spacing:2px;margin-bottom:3px;}
+
+  /* ABOUT */
+  #tentang{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .about-img-main{width:100%;height:480px;background:linear-gradient(135deg,#e8b0b0,#c06060);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:110px;}
+  .about-img-accent{position:absolute;bottom:-20px;right:-20px;width:170px;height:170px;background:var(--sage);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:56px;}
+  .about-text p{font-size:14px;line-height:1.9;color:var(--text-muted);margin-bottom:14px;}
+  .about-features{margin:28px 0;display:flex;flex-direction:column;gap:14px;}
+  .feat-item{display:flex;gap:14px;align-items:flex-start;}
+  .feat-icon{width:38px;height:38px;background:var(--warm);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .feat-title{font-weight:600;font-size:13px;color:var(--brown);margin-bottom:2px;}
+  .feat-desc{font-size:12px;color:var(--text-muted);}
+
+  /* KONTAK */
+  #kontak{background:var(--cream);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;}
+  .contact-info p{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:32px;}
+  .contact-items{display:flex;flex-direction:column;gap:18px;}
+  .contact-item{display:flex;gap:14px;align-items:flex-start;}
+  .contact-icon{width:42px;height:42px;background:var(--warm);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+  .contact-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;font-weight:500;}
+  .contact-value{font-size:14px;color:var(--brown);font-weight:500;}
+  .wa-float{position:fixed;bottom:28px;right:28px;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 24px rgba(37,211,102,.4);cursor:pointer;transition:all .3s;text-decoration:none;animation:pulse-wa 2.5s infinite;}
+  .wa-float:hover{transform:scale(1.1);box-shadow:0 10px 32px rgba(37,211,102,.5);}
+  @keyframes pulse-wa{0%,100%{box-shadow:0 6px 24px rgba(37,211,102,.4);}50%{box-shadow:0 6px 36px rgba(37,211,102,.7);}}
+  .contact-form{display:flex;flex-direction:column;gap:18px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .form-group{display:flex;flex-direction:column;gap:7px;}
+  .form-group label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);font-weight:500;}
+  .form-group input,.form-group textarea,.form-group select{border:1.5px solid #e8ddd8;background:white;padding:12px 14px;font-family:'Jost';font-size:13px;color:var(--text);border-radius:2px;transition:border-color .3s;outline:none;resize:none;}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--rose);}
+  .form-group textarea{height:110px;}
+
+  /* FOOTER */
+  footer{background:var(--brown);color:rgba(255,255,255,.8);padding:72px 60px 36px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:56px;margin-bottom:56px;}
+  .footer-logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:white;margin-bottom:14px;}
+  .footer-logo span{color:var(--rose-light);font-style:italic;}
+  .footer-about{font-size:13px;line-height:1.8;margin-bottom:24px;color:rgba(255,255,255,.6);}
+  .footer-socials{display:flex;gap:10px;}
+  .social-btn{width:36px;height:36px;background:rgba(255,255,255,.1);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all .3s;text-decoration:none;color:white;}
+  .social-btn:hover{background:var(--rose);transform:translateY(-3px);}
+  .footer-col-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:white;font-weight:500;margin-bottom:22px;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
+  .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;transition:color .3s;}
+  .footer-links a:hover{color:var(--rose-light);}
+  .newsletter-input{display:flex;}
+  .newsletter-input input{flex:1;padding:11px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-right:none;color:white;font-family:'Jost';font-size:12px;outline:none;border-radius:2px 0 0 2px;}
+  .newsletter-input input::placeholder{color:rgba(255,255,255,.4);}
+  .newsletter-input button{background:var(--rose);color:white;border:none;padding:11px 18px;font-family:'Jost';font-size:18px;cursor:pointer;transition:background .3s;border-radius:0 2px 2px 0;}
+  .newsletter-input button:hover{background:var(--rose-dark);}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .footer-copy{font-size:12px;color:rgba(255,255,255,.4);}
+  .footer-bottom-links{display:flex;gap:22px;}
+  .footer-bottom-links a{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .3s;}
+  .footer-bottom-links a:hover{color:var(--rose-light);}
+
+  /* CART SIDEBAR */
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .cart-overlay.open{opacity:1;pointer-events:all;}
+  .cart-sidebar{position:fixed;top:0;right:-430px;width:430px;height:100%;background:var(--cream);z-index:2001;display:flex;flex-direction:column;transition:right .4s cubic-bezier(.25,.8,.25,1);box-shadow:-20px 0 60px rgba(0,0,0,.15);}
+  .cart-sidebar.open{right:0;}
+  .cart-header-bar{padding:26px 26px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(201,98,95,.15);}
+  .cart-header-bar h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--brown);}
+  .cart-close-btn{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);transition:color .3s;}
+  .cart-close-btn:hover{color:var(--rose);}
+  .cart-items{flex:1;overflow-y:auto;padding:18px 26px;display:flex;flex-direction:column;gap:14px;}
+  .cart-item{display:flex;gap:12px;align-items:center;background:white;padding:13px;border-radius:4px;animation:slideIn .3s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+  .cart-item-img{width:60px;height:60px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;background:var(--warm);}
+  .cart-item-info{flex:1;}
+  .cart-item-name{font-weight:600;font-size:13px;color:var(--brown);margin-bottom:3px;}
+  .cart-item-price{font-size:13px;color:var(--rose);font-weight:600;}
+  .cart-item-qty{display:flex;align-items:center;gap:7px;margin-top:7px;}
+  .qty-btn{width:22px;height:22px;background:var(--warm);border:none;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  .qty-btn:hover{background:var(--rose-light);color:white;}
+  .qty-val{font-size:13px;font-weight:600;min-width:18px;text-align:center;}
+  .cart-item-del{background:none;border:none;color:#ccc;font-size:15px;cursor:pointer;transition:color .3s;}
+  .cart-item-del:hover{color:var(--rose);}
+  .cart-empty{text-align:center;padding:60px 20px;}
+  .cart-empty-icon{font-size:56px;margin-bottom:14px;}
+  .cart-empty p{font-size:14px;color:var(--text-muted);}
+  .cart-footer{padding:18px 26px 26px;border-top:1px solid rgba(201,98,95,.15);background:white;}
+  .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .cart-total-label{font-size:13px;color:var(--text-muted);}
+  .cart-total-price{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--rose-dark);}
+  .cart-btns{display:flex;flex-direction:column;gap:10px;}
+  .checkout-btn{width:100%;}
+
+  /* PRODUCT MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal{background:var(--cream);max-width:660px;width:100%;border-radius:4px;overflow:hidden;transform:scale(.9) translateY(20px);transition:all .4s cubic-bezier(.25,.8,.25,1);max-height:90vh;overflow-y:auto;position:relative;}
+  .modal-overlay.open .modal{transform:scale(1) translateY(0);}
+  .modal-img{height:270px;display:flex;align-items:center;justify-content:center;font-size:96px;}
+  .modal-body{padding:32px;}
+  .modal-body h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--brown);margin-bottom:6px;}
+  .modal-price{font-family:'Playfair Display',serif;font-size:22px;color:var(--rose);font-weight:700;margin-bottom:18px;}
+  .modal-desc{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:26px;}
+  .modal-footer{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:white;border:none;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .3s;}
+  .modal-close:hover{background:var(--rose);color:white;}
+
+  /* GALLERY MODAL */
+  .gallery-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:4000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
+  .gallery-modal-overlay.open{opacity:1;pointer-events:all;}
+  .gallery-modal{max-width:680px;width:100%;text-align:center;}
+  .gallery-modal-img{font-size:140px;margin-bottom:20px;animation:float 4s ease-in-out infinite;}
+  .gallery-modal-caption{font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:8px;}
+  .gallery-modal-sub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:28px;}
+  .gallery-modal-close{background:rgba(255,255,255,.15);color:white;border:1.5px solid rgba(255,255,255,.3);padding:10px 28px;font-family:'Jost';font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .3s;}
+  .gallery-modal-close:hover{background:white;color:var(--brown);}
+
+  /* CHECKOUT MODAL */
+  .checkout-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
+  .checkout-modal-overlay.open{opacity:1;pointer-events:all;}
+  .checkout-box{background:var(--cream);max-width:500px;width:100%;border-radius:4px;overflow:hidden;transform:scale(.9) translateY(20px);transition:all .4s cubic-bezier(.25,.8,.25,1);max-height:90vh;overflow-y:auto;position:relative;}
+  .checkout-modal-overlay.open .checkout-box{transform:scale(1) translateY(0);}
+  .checkout-box-body{padding:36px;}
+  .checkout-box-body h2{font-family:'Playfair Display',serif;font-size:24px;color:var(--brown);margin-bottom:24px;}
+  .checkout-steps{display:flex;gap:6px;margin-bottom:30px;}
+  .step{flex:1;text-align:center;}
+  .step-dot{width:26px;height:26px;border-radius:50%;background:var(--warm);margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text-muted);transition:all .3s;}
+  .step.active .step-dot{background:var(--rose);color:white;}
+  .step.done .step-dot{background:var(--sage);color:white;}
+  .step-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);font-weight:500;}
+  .step.active .step-label{color:var(--rose);}
+  .pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid #e0d8d0;border-radius:4px;cursor:pointer;transition:all .3s;margin-bottom:10px;}
+  .pay-opt:hover,.pay-opt.selected{border-color:var(--rose);background:rgba(201,98,95,.04);}
+  .pay-icon{font-size:22px;}
+  .pay-name{font-weight:600;font-size:13px;color:var(--brown);}
+  .pay-sub{font-size:11px;color:var(--text-muted);}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brown);color:white;padding:13px 26px;border-radius:4px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:all .4s;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* RESPONSIVE */
+  @media(max-width:1024px){.prod-grid,.cat-grid{grid-template-columns:repeat(2,1fr);}.footer-grid{grid-template-columns:1fr 1fr;}.testi-grid{grid-template-columns:1fr;}.gallery-grid{grid-template-columns:repeat(2,1fr);}.gallery-item:first-child{grid-row:auto;grid-column:auto;}}
+  @media(max-width:768px){nav{padding:16px 24px;}.nav-links{display:none;}section{padding:64px 24px;}.hero{grid-template-columns:1fr;padding:96px 24px 56px;gap:36px;}.hero::before{display:none;}.hero-img-frame{width:260px;height:320px;}.hero-flower-emoji{font-size:90px;}#tentang{grid-template-columns:1fr;padding:64px 24px;gap:36px;}.contact-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;gap:28px;}.banner{grid-template-columns:1fr;padding:44px 32px;}.banner-section{padding:0 24px 64px;}.form-row{grid-template-columns:1fr;}.cart-sidebar{width:100%;right:-100%;}.gallery-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- WA FLOAT -->
+<a class="wa-float" href="https://wa.me/6285141318070?text=Halo%20Bloome!%20Saya%20ingin%20pesan%20buket%20bunga%20🌸" target="_blank" title="Chat WhatsApp">💬</a>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">Bloom<span>e</span></a>
+  <ul class="nav-links">
+    <li><a href="#kategori">Kategori</a></li>
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#galeri">Galeri</a></li>
+    <li><a href="#tentang">Tentang</a></li>
+    <li><a href="#ulasan">Ulasan</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="openCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
+    <a href="admin.html" class="btn-outline" style="padding:8px 16px;font-size:11px;">⚙ Admin</a>
+    <a href="#kontak" class="btn-primary" style="padding:9px 20px;font-size:11px;">Pesan Sekarang</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="beranda">
+  <div class="hero-text">
+    <div class="hero-tag">Toko Buket Bunga Premium</div>
+    <h1>Ungkapkan <em>Perasaan</em><br>dengan Bunga Terbaik</h1>
+    <p>Setiap buket adalah karya tangan yang dibuat dengan cinta — untuk ulang tahun, wisuda, pernikahan, atau sekadar mengucap sayang.</p>
+    <div class="hero-btns">
+      <a href="#produk" class="btn-primary">Lihat Koleksi</a>
+      <a class="btn-wa" href="https://wa.me/6285141318070?text=Halo!%20Saya%20mau%20custom%20order%20buket%20🌸" target="_blank">💬 Custom Order WA</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num" id="statCust">500+</span><span class="stat-label">Pelanggan</span></div>
+      <div><span class="stat-num" id="statProd">50+</span><span class="stat-label">Desain</span></div>
+      <div><span class="stat-num">4.9★</span><span class="stat-label">Rating</span></div>
+    </div>
+  </div>
+  <div class="hero-img">
+    <div class="hero-img-frame"><div class="hero-flower-emoji">💐</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap"><div class="marquee-track" id="marqueeTrack"></div></div>
+
+<!-- KATEGORI -->
+<section id="kategori">
+  <div class="cat-header">
+    <div><div class="section-tag">Koleksi Kami</div><h2 class="section-title">Temukan <em>Kategori</em><br>yang Tepat</h2></div>
+    <a href="#produk" class="btn-outline">Semua Produk</a>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" onclick="filterProducts('Romantis',null)"><div class="cat-img">🌹</div><div class="cat-info"><div class="cat-name">Romantis</div><div class="cat-count">Mawar & Mix</div></div></div>
+    <div class="cat-card" onclick="filterProducts('Wisuda',null)"><div class="cat-img">🎓</div><div class="cat-info"><div class="cat-name">Wisuda</div><div class="cat-count">Meriah & Colorful</div></div></div>
+    <div class="cat-card" onclick="filterProducts('Premium',null)"><div class="cat-img">🌿</div><div class="cat-info"><div class="cat-name">Premium</div><div class="cat-count">Eksklusif</div></div></div>
+    <div class="cat-card" onclick="filterProducts('Ulang Tahun',null)"><div class="cat-img">🎀</div><div class="cat-info"><div class="cat-name">Ulang Tahun</div><div class="cat-count">Ceria & Cute</div></div></div>
+  </div>
+</section>
+
+<!-- PRODUK -->
+<section id="produk">
+  <div class="prod-header">
+    <div><div class="section-tag">Best Seller</div><h2 class="section-title">Buket <em>Pilihan</em></h2></div>
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" onclick="filterProducts('Semua',this)">Semua</button>
+      <button class="filter-tab" onclick="filterProducts('Romantis',this)">Romantis</button>
+      <button class="filter-tab" onclick="filterProducts('Wisuda',this)">Wisuda</button>
+      <button class="filter-tab" onclick="filterProducts('Premium',this)">Premium</button>
+      <button class="filter-tab" onclick="filterProducts('Ulang Tahun',this)">Ulang Tahun</button>
+    </div>
+  </div>
+  <div class="prod-grid" id="prodGrid"></div>
+</section>
+
+<!-- GALERI -->
+<section id="galeri">
+  <div class="gallery-header">
+    <div><div class="section-tag">Portofolio</div><h2 class="section-title">Galeri <em>Karya Kami</em></h2></div>
+    <a class="btn-wa" href="https://wa.me/6285141318070?text=Halo!%20Saya%20tertarik%20dengan%20koleksi%20Bloome%20🌸" target="_blank">💬 Tanya via WA</a>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- BANNER -->
+<div class="banner-section">
+  <div class="banner">
+    <div>
+      <div class="banner-tag">Penawaran Spesial</div>
+      <h2>Custom Buket Sesuai<br>Keinginanmu</h2>
+      <p>Ceritakan momen spesialmu dan kami wujudkan buket impian. Konsultasi gratis via WhatsApp!</p>
+      <div class="banner-btns">
+        <a class="btn-wa" href="https://wa.me/6281234567890?text=Halo!%20Saya%20mau%20konsultasi%20custom%20order%20buket%20🌸" target="_blank">💬 Chat WhatsApp</a>
+        <a href="#kontak" class="btn-outline" style="border-color:rgba(255,255,255,.5);color:white;">Form Order</a>
+      </div>
+    </div>
+    <div style="font-size:160px;opacity:.1;">🌸</div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<section id="ulasan">
+  <div class="testi-header"><div class="section-tag">Ulasan Pelanggan</div><h2 class="section-title">Mereka <em>Menyukainya</em></h2></div>
+  <div class="testi-grid">
+    <div class="testi-card"><span class="testi-quote">"</span><p class="testi-text">Bunganya fresh banget dan packagingnya cantik sekali! Pacarku langsung nangis haru. Pasti order lagi buat anniversary!</p><div class="testi-footer"><div class="testi-avatar">👩</div><div><div class="stars">★★★★★</div><div class="testi-name">Anisa Rahmawati</div><div class="testi-date">2 minggu lalu</div></div></div></div>
+    <div class="testi-card"><span class="testi-quote">"</span><p class="testi-text">Order untuk wisuda adikku, hasilnya melebihi ekspektasi! Bunga awet, warna sesuai request, dikirim tepat waktu.</p><div class="testi-footer"><div class="testi-avatar">👨</div><div><div class="stars">★★★★★</div><div class="testi-name">Budi Santoso</div><div class="testi-date">1 bulan lalu</div></div></div></div>
+    <div class="testi-card"><span class="testi-quote">"</span><p class="testi-text">Sudah 3x order di sini dan selalu puas! Harga terjangkau, kualitas premium. Pelayanannya ramah dan responsif!</p><div class="testi-footer"><div class="testi-avatar">👩</div><div><div class="stars">★★★★★</div><div class="testi-name">Siti Nurhaliza</div><div class="testi-date">3 minggu lalu</div></div></div></div>
+  </div>
+</section>
+
+<!-- TENTANG -->
+<section id="tentang">
+  <div style="position:relative;">
+    <div class="about-img-main">🌺</div>
+    <div class="about-img-accent">🌿</div>
+  </div>
+  <div class="about-text">
+    <div class="section-tag">Tentang Kami</div>
+    <h2 class="section-title" style="margin-bottom:20px;">Dibuat dengan <em>Cinta</em><br>untuk Momen Spesialmu</h2>
+    <p>Bloome adalah toko buket bunga handmade yang berdedikasi menghadirkan karya floral terbaik untuk setiap momen berharga dalam hidupmu.</p>
+    <p>Setiap buket dibuat satu per satu dengan tangan, menggunakan bunga segar pilihan dan bahan berkualitas premium.</p>
+    <div class="about-features">
+      <div class="feat-item"><div class="feat-icon">🌸</div><div><div class="feat-title">Bunga Segar Pilihan</div><div class="feat-desc">Dipilih langsung dari petani lokal setiap hari</div></div></div>
+      <div class="feat-item"><div class="feat-icon">✋</div><div><div class="feat-title">100% Handmade</div><div class="feat-desc">Dikerjakan manual dengan penuh perhatian dan cinta</div></div></div>
+      <div class="feat-item"><div class="feat-icon">🚚</div><div><div class="feat-title">Pengiriman Aman</div><div class="feat-desc">Dikemas khusus agar bunga tetap fresh sampai tujuan</div></div></div>
+    </div>
+    <a class="btn-wa" href="https://wa.me/6285141318070?text=Halo!%20Saya%20ingin%20tahu%20lebih%20lanjut%20tentang%20Bloome%20🌸" target="_blank">💬 Hubungi Kami</a>
+  </div>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-tag">Hubungi Kami</div>
+      <h2 class="section-title" style="margin-bottom:20px;">Siap Membantu<br><em>Kamu</em></h2>
+      <p>Ada pertanyaan atau mau custom order? Kami siap 7 hari seminggu. Chat langsung via WhatsApp untuk respon tercepat!</p>
+      <div class="contact-items">
+        <div class="contact-item"><div class="contact-icon">📱</div><div><div class="contact-label">WhatsApp</div><div class="contact-value">+62 6285141318070</div></div></div>
+        <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-label">Lokasi</div><div class="contact-value">Tegal, Jawa Tengah</div></div></div>
+        <div class="contact-item"><div class="contact-icon">🕐</div><div><div class="contact-label">Jam Buka</div><div class="contact-value">Senin – Minggu: 08.00 – 21.00</div></div></div>
+        <div class="contact-item"><div class="contact-icon">📸</div><div><div class="contact-label">Instagram</div><div class="contact-value">@bloome.tegal</div></div></div>
+      </div>
+      <div style="margin-top:28px;">
+        <a class="btn-wa" href="https://wa.me/6285141318070?text=Halo%20Bloome!%20Saya%20ingin%20pesan%20🌸" target="_blank" style="font-size:13px;padding:14px 28px;">💬 Chat WhatsApp Sekarang</a>
+      </div>
+    </div>
+    <div>
+      <div class="section-tag" style="margin-bottom:12px;">Form Pemesanan</div>
+      <div class="contact-form" id="orderForm">
+        <div class="form-row">
+          <div class="form-group"><label>Nama Lengkap *</label><input type="text" id="fname" placeholder="Nama kamu..."></div>
+          <div class="form-group"><label>No. WhatsApp *</label><input type="tel" id="fphone" placeholder="08xx-xxxx-xxxx"></div>
+        </div>
+        <div class="form-group"><label>Jenis Buket *</label>
+          <select id="ftype">
+            <option value="">Pilih kategori...</option>
+            <option>Romantis — Mawar Mix</option>
+            <option>Wisuda — Colorful Bouquet</option>
+            <option>Ulang Tahun — Cheerful Mix</option>
+            <option>Premium — Exclusive Series</option>
+            <option>Custom — Sesuai Request</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Budget</label>
+            <select id="fbudget">
+              <option value="">Pilih range...</option>
+              <option>Rp 50.000 – 100.000</option>
+              <option>Rp 100.000 – 200.000</option>
+              <option>Rp 200.000 – 350.000</option>
+              <option>Rp 350.000 ke atas</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tanggal Dibutuhkan</label><input type="date" id="fdate"></div>
+        </div>
+        <div class="form-group"><label>Pesan / Request Khusus</label><textarea id="fmessage" placeholder="Ceritakan momennya, warna favorit, pesan untuk penerima..."></textarea></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn-primary" onclick="submitOrderForm()" style="flex:1;padding:14px;">Kirim via Form 📋</button>
+          <button class="btn-wa" onclick="submitOrderWA()" style="flex:1;padding:14px;justify-content:center;">💬 Kirim via WA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Bloom<span>e</span></div>
+      <p class="footer-about">Toko buket bunga handmade premium untuk setiap momen spesial. Dibuat dengan cinta, dikirim dengan kebahagiaan.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">📸</a>
+        <a class="social-btn" href="https://wa.me/6285141318070" target="_blank">💬</a>
+        <a class="social-btn" href="#">🎵</a>
+        <a class="social-btn" href="#">▶️</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigasi</div>
+      <ul class="footer-links">
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#kategori">Kategori</a></li>
+        <li><a href="#produk">Produk</a></li>
+        <li><a href="#galeri">Galeri</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Layanan</div>
+      <ul class="footer-links">
+        <li><a href="#">Custom Order</a></li>
+        <li><a href="#">Same Day Delivery</a></li>
+        <li><a href="#">Paket Pernikahan</a></li>
+        <li><a href="#">Langganan Bunga</a></li>
+        <li><a href="#">Gift Hamper</a></li>
+        <li><a href="admin.html">Admin Panel</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Newsletter</div>
+      <p style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:14px;">Dapatkan promo spesial langsung di inbox-mu.</p>
+      <div class="newsletter-input" style="margin-bottom:16px;">
+        <input type="email" id="newsletterEmail" placeholder="Email kamu...">
+        <button onclick="subscribeNewsletter()">→</button>
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,.4);">Atau chat langsung:</p>
+      <a class="btn-wa" href="https://wa.me/6285141318070" target="_blank" style="margin-top:10px;font-size:11px;padding:9px 18px;">💬 WhatsApp Kami</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Bloome. Dibuat dengan 🌸 di Tegal, Jawa Tengah.</div>
+    <div class="footer-bottom-links">
+      <a href="#">Privasi</a>
+      <a href="#">Syarat & Ketentuan</a>
+      <a href="#">Pengembalian</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header-bar"><h3>🛒 Keranjang</h3><button class="cart-close-btn" onclick="closeCart()">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total"><span class="cart-total-label">Total</span><span class="cart-total-price" id="cartTotal">Rp 0</span></div>
+    <div class="cart-btns">
+      <button class="btn-primary checkout-btn" onclick="openCheckout()">Lanjut ke Pembayaran →</button>
+      <button class="btn-wa checkout-btn" onclick="checkoutWA()" style="justify-content:center;">💬 Order via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="productModal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <h2 id="modalName"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-footer">
+        <button class="btn-primary" onclick="addFromModal()">+ Keranjang</button>
+        <button class="btn-wa" onclick="orderModalWA()">💬 Order WA</button>
+        <button class="btn-outline" onclick="closeModalDirect()">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY MODAL -->
+<div class="gallery-modal-overlay" id="galleryModalOverlay" onclick="closeGalleryModal()">
+  <div class="gallery-modal" onclick="event.stopPropagation()">
+    <div class="gallery-modal-img" id="galleryModalImg">🌸</div>
+    <div class="gallery-modal-caption" id="galleryModalCaption"></div>
+    <div class="gallery-modal-sub" id="galleryModalSub"></div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="gallery-modal-close" onclick="closeGalleryModal()">Tutup</button>
+      <a class="btn-wa" id="galleryModalWA" href="#" target="_blank" style="font-size:11px;padding:9px 20px;">💬 Order Ini</a>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-modal-overlay" id="checkoutOverlay" onclick="closeCheckout(event)">
+  <div class="checkout-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeCheckoutDirect()">✕</button>
+    <div class="checkout-box-body">
+      <h2>Selesaikan Pesanan 🌸</h2>
+      <div class="checkout-steps">
+        <div class="step active" id="step1"><div class="step-dot">1</div><div class="step-label">Data</div></div>
+        <div class="step" id="step2"><div class="step-dot">2</div><div class="step-label">Bayar</div></div>
+        <div class="step" id="step3"><div class="step-dot">3</div><div class="step-label">Selesai</div></div>
+      </div>
+      <div id="checkoutStep1">
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group"><label>Nama *</label><input id="cname" placeholder="Nama lengkap..."></div>
+            <div class="form-group"><label>No. WA *</label><input id="cphone" placeholder="08xx..."></div>
+          </div>
+          <div class="form-group"><label>Alamat Pengiriman *</label><textarea id="caddress" placeholder="Alamat lengkap..." style="height:88px;"></textarea></div>
+          <div class="form-group"><label>Metode Pengiriman</label>
+            <select id="cdelivery">
+              <option>Pickup Sendiri (Gratis)</option>
+              <option>Antar Area Tegal (Rp 10.000)</option>
+              <option>Luar Kota (Sesuai Jarak)</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="goToPayment()" style="width:100%;padding:13px;">Lanjut ke Pembayaran →</button>
+        </div>
+      </div>
+      <div id="checkoutStep2" style="display:none;">
+        <div id="paymentMethods">
+          <div class="pay-opt" onclick="selectPay(this,'transfer')"><div class="pay-icon">🏦</div><div><div class="pay-name">Transfer Bank</div><div class="pay-sub">BCA / BRI / Mandiri</div></div></div>
+          <div class="pay-opt" onclick="selectPay(this,'ewallet')"><div class="pay-icon">💸</div><div><div class="pay-name">GoPay / OVO / Dana</div><div class="pay-sub">E-Wallet</div></div></div>
+          <div class="pay-opt" onclick="selectPay(this,'cod')"><div class="pay-icon">💵</div><div><div class="pay-name">COD (Bayar di Tempat)</div><div class="pay-sub">Khusus area Tegal</div></div></div>
+          <div class="pay-opt" onclick="selectPay(this,'wa')"><div class="pay-icon">💬</div><div><div class="pay-name">Konfirmasi via WhatsApp</div><div class="pay-sub">Kami hubungi kamu langsung</div></div></div>
+        </div>
+        <div style="background:var(--warm);padding:14px 16px;border-radius:4px;margin:18px 0;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text-muted);">Subtotal</span><span id="checkSubtotal" style="font-weight:600;color:var(--brown);"></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="font-weight:700;color:var(--brown);">Total</span><span id="checkTotal" style="font-weight:700;color:var(--rose);font-family:'Playfair Display',serif;font-size:17px;"></span></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-primary" onclick="completeOrder()" style="flex:1;padding:13px;">Konfirmasi ✓</button>
+          <button class="btn-wa" onclick="checkoutWA()" style="flex:1;justify-content:center;padding:13px;">💬 Via WA</button>
+        </div>
+      </div>
+      <div id="checkoutStep3" style="display:none;text-align:center;padding:16px 0;">
+        <div style="font-size:72px;margin-bottom:18px;animation:float 3s ease-in-out infinite;">🌸</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--brown);margin-bottom:10px;">Pesanan Berhasil!</h3>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:24px;">Terima kasih! Kami akan segera menghubungi kamu via WhatsApp untuk konfirmasi pesanan. 💐</p>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button class="btn-primary" onclick="closeCheckoutDirect()" style="padding:12px 28px;">Kembali</button>
+          <a class="btn-wa" href="https://wa.me/6285141318070?text=Halo!%20Saya%20baru%20saja%20melakukan%20pemesanan%20di%20Bloome%20🌸" target="_blank" style="padding:12px 20px;">💬 Chat WA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STORAGE HELPERS
+function getProducts(){try{const d=localStorage.getItem('bloome_products');return d?JSON.parse(d):getDefaultProducts();}catch(e){return getDefaultProducts();}}
+function getDefaultProducts(){return[
+  {id:1,name:'Red Love Bouquet',category:'Romantis',price:185000,emoji:'🌹',badge:'Best Seller',desc:'Buket mawar merah premium, simbol cinta abadi. Berisi 12 tangkai mawar segar pilihan dengan pita satin eksklusif.'},
+  {id:2,name:'Sunshine Gerbera',category:'Ulang Tahun',price:135000,emoji:'🌻',badge:'New',desc:'Warna cerah gerbera kuning dan oranye yang membahagiakan. Cocok untuk kejutan ulang tahun yang penuh semangat.'},
+  {id:3,name:'Green Garden Mix',category:'Premium',price:245000,emoji:'🌿',badge:'',desc:'Rangkaian premium dengan tanaman hijau tropis, eucalyptus, dan bunga eksotis. Elegan dan tahan lama.'},
+  {id:4,name:'Pink Dream Bouquet',category:'Romantis',price:165000,emoji:'🌸',badge:'Sale',desc:'Kombinasi mawar pink, baby breath, dan pita lavender yang anggun. Cocok untuk ekspresi perasaan tulus.'},
+  {id:5,name:'Wisuda Glory',category:'Wisuda',price:195000,emoji:'🎓',badge:'Popular',desc:'Buket spesial wisuda dengan nuansa meriah dan colorful. Dilengkapi dekorasi toga dan bintang emas.'},
+  {id:6,name:'Cotton & Bloom',category:'Premium',price:295000,emoji:'🌼',badge:'Premium',desc:'Buket premium dengan cotton flower, ranunculus, dan paeoni imported. Mewah dan berkesan.'},
+  {id:7,name:'Sweet Birthday Mix',category:'Ulang Tahun',price:145000,emoji:'🎀',badge:'',desc:'Campuran bunga warna-warni dengan dekorasi cute dan girly. Sempurna untuk sahabat tersayang.'},
+  {id:8,name:'Forest Whisper',category:'Premium',price:275000,emoji:'🍃',badge:'New',desc:'Rangkaian unik dengan dedaunan eksotis, protea, dan bunga liar. Keindahan alam dalam genggamanmu.'},
+];}
+
+const galleryItems=[
+  {emoji:'🌹',caption:'Red Romance Series',sub:'Romantis · Mawar Merah Premium',msg:'Halo! Saya tertarik dengan Red Romance Series 🌹'},
+  {emoji:'🌸',caption:'Pink Pastel Bliss',sub:'Romantis · Mawar Pink & Baby Breath',msg:'Halo! Saya tertarik dengan Pink Pastel Bliss 🌸'},
+  {emoji:'🌻',caption:'Sunshine Burst',sub:'Ulang Tahun · Gerbera & Sunflower',msg:'Halo! Saya tertarik dengan Sunshine Burst 🌻'},
+  {emoji:'🌿',caption:'Tropical Luxe',sub:'Premium · Eksotis & Elegan',msg:'Halo! Saya tertarik dengan Tropical Luxe 🌿'},
+  {emoji:'🎓',caption:'Graduation Glory',sub:'Wisuda · Colorful & Meriah',msg:'Halo! Saya tertarik dengan Graduation Glory 🎓'},
+  {emoji:'🌼',caption:'Cotton Dream',sub:'Premium · Cotton Flower & Paeoni',msg:'Halo! Saya tertarik dengan Cotton Dream 🌼'},
+];
+
+let cart=[];
+let currentProduct=null;
+let selectedPayment='';
+const WA_NUM='6285141318070';
+
+// ── MARQUEE
+const marqueeItems=['Free Ongkir Tegal','Bunga Segar Setiap Hari','Chat WA 24 Jam','Same Day Delivery','Custom Order Available','Handmade with Love','Gratis Kartu Ucapan'];
+const track=document.getElementById('marqueeTrack');
+[...marqueeItems,...marqueeItems].forEach(t=>{const el=document.createElement('div');el.className='marquee-item';el.textContent=t;track.appendChild(el);});
+
+// ── RENDER PRODUCTS
+const bgColors=['#ffe0e0,#ffc8c8','#fff0d6,#ffd090','#e0f5e0,#b8e8b8','#ffe0f5,#f5b8e8','#e0e8ff,#b8c8ff','#fff5e0,#ffe0b0','#ffe8e0,#ffd0c0','#e8ffe0,#caf0b0'];
+function renderProducts(filter='Semua'){
+  const products=getProducts();
+  const grid=document.getElementById('prodGrid');
+  const filtered=filter==='Semua'?products:products.filter(p=>p.category===filter);
+  if(filtered.length===0){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:15px;">Belum ada produk di kategori ini 🌱</div>`;return;}
+  grid.innerHTML=filtered.map((p,i)=>`
+    <div class="prod-card">
+      ${p.badge?`<div class="prod-badge ${p.badge==='New'?'new':''}">${p.badge}</div>`:''}
+      <div class="prod-img" style="background:linear-gradient(135deg,${bgColors[i%bgColors.length]})" onclick="openModal(${p.id})">
+        ${p.emoji}
+        <button class="wishlist-btn" onclick="toggleWishlist(event,this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-desc">${p.desc.substring(0,62)}...</div>
+        <div class="prod-footer">
+          <div>
+            ${p.badge==='Sale'?`<span class="prod-price-old">Rp ${Math.round(p.price*1.2).toLocaleString('id-ID')}</span>`:''}
+            <span class="prod-price">Rp ${p.price.toLocaleString('id-ID')}</span>
+          </div>
+          <button class="add-cart-btn" onclick="addToCart(${p.id})">+</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterProducts(cat,btn){
+  renderProducts(cat);
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(cat!=='Semua')document.getElementById('produk').scrollIntoView({behavior:'smooth'});
+}
+
+// ── GALLERY
+function renderGallery(){
+  const grid=document.getElementById('galleryGrid');
+  grid.innerHTML=galleryItems.map((g,i)=>`
+    <div class="gallery-item" onclick="openGalleryModal(${i})">
+      <div class="gallery-img">${g.emoji}</div>
+      <div class="gallery-overlay"><div><div class="gallery-caption">${g.caption}</div><div class="gallery-sub">${g.sub}</div></div></div>
+    </div>`).join('');
+}
+
+function openGalleryModal(i){
+  const g=galleryItems[i];
+  document.getElementById('galleryModalImg').textContent=g.emoji;
+  document.getElementById('galleryModalCaption').textContent=g.caption;
+  document.getElementById('galleryModalSub').textContent=g.sub;
+  document.getElementById('galleryModalWA').href=`https://wa.me/${WA_NUM}?text=${encodeURIComponent(g.msg)}`;
+  document.getElementById('galleryModalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeGalleryModal(){document.getElementById('galleryModalOverlay').classList.remove('open');document.body.style.overflow='';}
+
+// ── WISHLIST
+function toggleWishlist(e,btn){e.stopPropagation();btn.classList.toggle('active');btn.textContent=btn.classList.contains('active')?'❤️':'🤍';showToast(btn.classList.contains('active')?'❤️ Ditambahkan ke Wishlist':'🤍 Dihapus dari Wishlist');}
+
+// ── CART
+function addToCart(id,fromModal=false){
+  const products=getProducts();
+  const p=products.find(x=>x.id===id);
+  const existing=cart.find(x=>x.id===id);
+  if(existing)existing.qty++;else cart.push({...p,qty:1});
+  updateCartUI();
+  showToast(`🌸 ${p.name} ditambahkan!`);
+  if(!fromModal)openCart();
+}
+function addFromModal(){if(currentProduct){addToCart(currentProduct.id,true);closeModalDirect();openCart();}}
+function removeFromCart(id){cart=cart.filter(x=>x.id!==id);updateCartUI();renderCartItems();}
+function changeQty(id,d){const item=cart.find(x=>x.id===id);if(item){item.qty+=d;if(item.qty<=0)removeFromCart(id);else{updateCartUI();renderCartItems();}}}
+function updateCartUI(){
+  const total=cart.reduce((s,x)=>s+x.qty,0);
+  const el=document.getElementById('cartCount');
+  el.textContent=total;el.style.display=total>0?'flex':'none';
+  renderCartItems();
+}
+function renderCartItems(){
+  const el=document.getElementById('cartItems');
+  const footer=document.getElementById('cartFooter');
+  if(cart.length===0){el.innerHTML=`<div class="cart-empty"><div class="cart-empty-icon">🌱</div><p>Keranjangmu masih kosong.<br>Yuk pilih buket cantik!</p></div>`;footer.style.display='none';}
+  else{
+    el.innerHTML=cart.map(item=>`<div class="cart-item">
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+        <div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button><span class="qty-val">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id},1)">+</button></div>
+      </div>
+      <button class="cart-item-del" onclick="removeFromCart(${item.id})">🗑</button>
+    </div>`).join('');
+    const totalPrice=cart.reduce((s,x)=>s+x.price*x.qty,0);
+    document.getElementById('cartTotal').textContent='Rp '+totalPrice.toLocaleString('id-ID');
+    footer.style.display='block';
+  }
+}
+function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartSidebar').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartSidebar').classList.remove('open');document.body.style.overflow='';}
+
+// ── WA CHECKOUT
+function checkoutWA(){
+  if(cart.length===0){showToast('⚠️ Keranjang masih kosong!');return;}
+  const items=cart.map(x=>`• ${x.name} x${x.qty} = Rp ${(x.price*x.qty).toLocaleString('id-ID')}`).join('\n');
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const msg=`Halo Bloome! Saya ingin memesan:\n\n${items}\n\nTotal: Rp ${total.toLocaleString('id-ID')}\n\nMohon konfirmasinya 🌸`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeCart();
+}
+
+// ── PRODUCT MODAL
+function openModal(id){
+  const products=getProducts();
+  const p=products.find(x=>x.id===id);
+  currentProduct=p;
+  const i=products.indexOf(p);
+  document.getElementById('modalImg').style.background=`linear-gradient(135deg,${bgColors[i%bgColors.length]})`;
+  document.getElementById('modalImg').textContent=p.emoji;
+  document.getElementById('modalName').textContent=p.name;
+  document.getElementById('modalPrice').textContent='Rp '+p.price.toLocaleString('id-ID');
+  document.getElementById('modalDesc').textContent=p.desc;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function orderModalWA(){
+  if(!currentProduct)return;
+  const msg=`Halo Bloome! Saya tertarik dengan *${currentProduct.name}* (Rp ${currentProduct.price.toLocaleString('id-ID')}). Apakah masih tersedia? 🌸`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeModalDirect();
+}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+
+// ── CHECKOUT
+function openCheckout(){
+  closeCart();
+  ['step1','step2','step3'].forEach((s,i)=>document.getElementById(s).className='step'+(i===0?' active':''));
+  document.getElementById('checkoutStep1').style.display='block';
+  document.getElementById('checkoutStep2').style.display='none';
+  document.getElementById('checkoutStep3').style.display='none';
+  selectedPayment='';
+  document.getElementById('checkoutOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCheckout(e){if(e.target===document.getElementById('checkoutOverlay'))closeCheckoutDirect();}
+function closeCheckoutDirect(){document.getElementById('checkoutOverlay').classList.remove('open');document.body.style.overflow='';}
+function goToPayment(){
+  const name=document.getElementById('cname').value.trim();
+  const phone=document.getElementById('cphone').value.trim();
+  const addr=document.getElementById('caddress').value.trim();
+  if(!name||!phone||!addr){showToast('⚠️ Lengkapi semua data dulu ya!');return;}
+  const sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  document.getElementById('checkSubtotal').textContent='Rp '+sub.toLocaleString('id-ID');
+  document.getElementById('checkTotal').textContent='Rp '+sub.toLocaleString('id-ID');
+  document.getElementById('checkoutStep1').style.display='none';
+  document.getElementById('checkoutStep2').style.display='block';
+  document.getElementById('step1').className='step done';
+  document.getElementById('step2').className='step active';
+}
+function selectPay(el,val){document.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');selectedPayment=val;}
+function completeOrder(){
+  if(!selectedPayment){showToast('⚠️ Pilih metode pembayaran dulu!');return;}
+  // Save order to localStorage
+  const name=document.getElementById('cname').value.trim();
+  const phone=document.getElementById('cphone').value.trim();
+  const addr=document.getElementById('caddress').value.trim();
+  const orders=JSON.parse(localStorage.getItem('bloome_orders')||'[]');
+  const newOrder={id:'ORD'+Date.now(),date:new Date().toLocaleDateString('id-ID'),customer:name,phone,address:addr,items:[...cart],total:cart.reduce((s,x)=>s+x.price*x.qty,0),payment:selectedPayment,status:'Menunggu Konfirmasi'};
+  orders.push(newOrder);
+  localStorage.setItem('bloome_orders',JSON.stringify(orders));
+  document.getElementById('checkoutStep2').style.display='none';
+  document.getElementById('checkoutStep3').style.display='block';
+  document.getElementById('step2').className='step done';
+  document.getElementById('step3').className='step active';
+  cart=[];updateCartUI();
+}
+
+// ── ORDER FORM
+function submitOrderForm(){
+  const name=document.getElementById('fname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const type=document.getElementById('ftype').value;
+  if(!name||!phone||!type){showToast('⚠️ Lengkapi data pemesanan dulu!');return;}
+  const orders=JSON.parse(localStorage.getItem('bloome_orders')||'[]');
+  const msg=document.getElementById('fmessage').value;
+  const budget=document.getElementById('fbudget').value;
+  const date=document.getElementById('fdate').value;
+  orders.push({id:'ORD'+Date.now(),date:new Date().toLocaleDateString('id-ID'),customer:name,phone,items:[{name:type,qty:1,price:0,emoji:'🌸'}],total:0,budget,tanggal:date,pesan:msg,status:'Baru',source:'form'});
+  localStorage.setItem('bloome_orders',JSON.stringify(orders));
+  document.getElementById('orderForm').innerHTML=`<div style="text-align:center;padding:40px 20px;"><div style="font-size:64px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">🌸</div><h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--brown);margin-bottom:10px;">Pesanan Terkirim!</h3><p style="font-size:14px;color:var(--text-muted);line-height:1.8;">Terima kasih, <strong>${name}</strong>! Kami akan menghubungi kamu di <strong>${phone}</strong> segera. 💐</p><a class="btn-wa" href="https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Halo! Saya ${name} baru saja mengisi form order untuk ${type}. Mohon konfirmasinya 🌸`)}" target="_blank" style="margin-top:20px;display:inline-flex;padding:12px 24px;">💬 Konfirmasi via WA</a></div>`;
+  showToast('🌺 Pesanan berhasil dikirim!');
+}
+function submitOrderWA(){
+  const name=document.getElementById('fname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const type=document.getElementById('ftype').value;
+  const budget=document.getElementById('fbudget').value;
+  const date=document.getElementById('fdate').value;
+  const msg_=document.getElementById('fmessage').value;
+  if(!name||!phone||!type){showToast('⚠️ Lengkapi data dulu!');return;}
+  const waMsg=`Halo Bloome! 🌸\n\nNama: ${name}\nNo. HP: ${phone}\nJenis Buket: ${type}${budget?'\nBudget: '+budget:''}${date?'\nTanggal: '+date:''}${msg_?'\nPesan: '+msg_:''}`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(waMsg)}`,'_blank');
+}
+
+// ── NEWSLETTER
+function subscribeNewsletter(){const e=document.getElementById('newsletterEmail').value.trim();if(!e||!e.includes('@')){showToast('⚠️ Masukkan email yang valid!');return;}showToast('✉️ Berhasil subscribe newsletter!');document.getElementById('newsletterEmail').value='';}
+
+// ── TOAST
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ── NAVBAR SCROLL
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50));
+
+// ── INIT
+renderProducts();
+renderGallery();
+renderCartItems();
+</script>
+</body>
+</html>
